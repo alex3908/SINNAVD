@@ -142,11 +142,12 @@ $erepo=$mysqli->query($reportesvd);
 					<input class="button fit" type="button" name="cancelar" value="Historial"  onclick="location='historial_usuario.php?id=<?php echo $idUsuario; ?>'">
 					<?php
 						if ($mi==2 or $mi==5 or $mi==1) {
-							$conV="SELECT id_usuario FROM historial WHERE id_usuario='$idUsuario' AND fecha_salida is null";
+							$conV="SELECT id  FROM historial WHERE id_usuario='$idUsuario' AND fecha_salida is null";
 							$dd=$mysqli->query($conV);
 							$rows = $dd->num_rows;
-							if($rows > 0) {	?>
-								<input type="button" name="asignar_curso" class="button special fit" value="usuario en visita" onclick="location='visitas.php?id=<?php echo $idUsuario; ?>'" disabled>
+							if($rows > 0) { 
+								$visita = implode($dd->fetch_assoc());?>
+								<input type="button" name="asignar_curso" class="button special fit" value="usuario en visita" onclick="location='perfil_visita.php?id=<?php echo $visita; ?>'"mf>
 							<?php } else { ?>
 								<input type="button" name="asignar_curso" class="button special fit" value="registrar visita" onclick="location='visitas.php?id=<?php echo $idUsuario;?>'">
 							<?php } ?>

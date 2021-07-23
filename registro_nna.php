@@ -61,7 +61,7 @@
         $correo=null;
     }
     else{ //si hay registro toma los datos del ws
-        $urlReportes ='https://name-pruebas.inftelapps.com/api/reportes';
+        $urlReportes ='http://172.16.1.37:8094/swNames/api/consumoNames';
         $jsonReportes = file_get_contents($urlReportes); 
         $arrReportes = json_decode($jsonReportes);
         $numReportes= count($arrReportes);

@@ -1,0 +1,28 @@
+<?php
+
+include 'conexion.php';
+$id = $_POST['id'];
+$query = "SELECT id,abogado_resp, promoventes, cosentimiento, juzgado, numero_expediente, fecha_inicial, fecha_sentencia, fecha_ejecucion FROM procedimiento_juridico WHERE id = $id and activo = 1";
+$result = mysqli_query($mysqli, $query);
+
+if (!$result) {
+    die('Ha ocurrido un error' . mysqli_error($mysqli));
+}
+
+$json = array();
+while ($row = mysqli_fetch_array($result)) {
+    $json[] = array(
+        'id' => $row['id'],
+        'responsable' => $row['abogado_resp'],
+        'promoventes' => $row['promoventes'],
+        'consentimiento' => $row['cosentimiento'],
+        'juzgado' => $row['juzgado'],
+        'numExpediente' => $row['numero_expediente'],
+        'fechaInicial' => $row['fecha_inicial'],
+        'fechaSentencia' => $row['fecha_sentencia'],
+        'fechaEjecucion' => $row['fecha_ejecucion'],
+    );
+}
+
+$jsonstring = json_encode($json);
+echo $jsonstring;

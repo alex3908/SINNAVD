@@ -1,5 +1,12 @@
 {
+    "name": "41lc9s2/procu",
+    "authors": [
+        {
+            "name": "diana moreno",
+            "email": "dianamoreno1503@hotmail.com"
+        }
+    ],
     "require": {
-        "phpoffice/phpspreadsheet": "^1.8"
+        "guzzlehttp/guzzle": "^6.5"
     }
 }

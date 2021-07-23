@@ -9,7 +9,7 @@
     $curp=($_GET['c']);
     $idNna=($_GET['idNna']);
     $idCaso=($_GET['idCaso']);
-    $cliente= new SoapClient('http://172.16.1.42/sistemas/wssieb/WebServiceBeneficiarios.asmx?wsdl'); //direccion del ws
+    $cliente= new SoapClient('http://187.188.236.198:8090/sistemas/wssieb/WebServiceBeneficiarios.asmx?wsdl'); //direccion del ws
 	$param=array('CURP'=>$curp); //parametro que recibirá
 	$response= $cliente->ConsultaPorCurp($param); //recibe el objeto
 	$array = json_decode(json_encode($response), True);  //convierte el objeto devuelto a cadena

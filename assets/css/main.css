@@ -2,10 +2,309 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,400italic,600italic|Roboto+Slab:400,700");
 
 
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 35px;
+	height: 19px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+  }
+  
+  .slider:before {
+	position: absolute;
+	content: "";
+	height: 11px;
+	width: 11px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+  }
+  
+  input:checked + .slider {
+	background-color: #FDDADA;
+  }
+  
+  input:focus + .slider {
+	box-shadow: 0 0 1px #F56A6A;
+  }
 
+  input:disabled + .slider {
+	cursor: default;
+  }
+
+
+
+
+
+
+
+  /* ------------------------- */
+/* POPUP */
+/* ------------------------- */
+
+.overlay {
+	background: rgba(0,0,0,.1);
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	visibility: hidden;
+}
+
+.overlay.active {
+	visibility: visible;
+}
+
+.popup {
+	background: #F8F8F8;
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+	border-radius: 3px;
+	font-family: 'Montserrat', sans-serif;
+	padding: 20px;
+	text-align: center;
+	width: 1000px;
+	
+	transition: .3s ease all;
+	transform: scale(0.7);
+	opacity: 0;
+}
+
+.popup .btn-cerrar-popup {
+	font-size: 16px;
+	line-height: 16px;
+	display: block;
+	text-align: right;
+	transition: .3s ease all;
+	
+	color: #BBBBBB;
+}
+
+.popup .btn-cerrar-popup:hover {
+	color: #000;
+}
+
+.popup h3 {
+	font-size: 36px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	opacity: 1;
+}
+
+.popup h4 {
+	font-size: 26px;
+	font-weight: 300;
+	margin-bottom: 40px;
+	opacity: 1;
+}
+
+.popup form .contenedor-inputs {
+	opacity: 1;
+}
+
+.popup form .contenedor-inputs input {
+	width: 100%;
+	margin-bottom: 20px;
+	height: 52px;
+	font-size: 18px;
+	line-height: 52px;
+	text-align: center;
+	border: 1px solid #BBBBBB;
+}
+
+.popup form .btn-submit {
+	padding: 0 20px;
+	height: 40px;
+	line-height: 40px;
+	border: none;
+	color: #fff;
+	background: #5E7DE3;
+	border-radius: 3px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 16px;
+	cursor: pointer;
+	transition: .3s ease all;
+}
+
+.popup form .btn-submit:hover {
+	background: rgba(94,125,227, .9);
+}
+
+/* ------------------------- */
+/* ANIMACIONES */
+/* ------------------------- */
+.popup.active {	transform: scale(1); opacity: 1; }
+
+
+/* ------------------------- */
+/* POPUP2 */
+/* ------------------------- */
+
+.overlay2 {
+	background: rgba(0,0,0,.1);
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	visibility: hidden;
+}
+
+.overlay2.active {
+	visibility: visible;
+}
+
+.popup2 {
+	background: #F8F8F8;
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+	border-radius: 3px;
+	font-family: 'Montserrat', sans-serif;
+	padding: 20px;
+	text-align: center;
+	width: 1000px;
+	
+	transition: .3s ease all;
+	transform: scale(0.7);
+	opacity: 0;
+}
+
+.popup2 .btn-cerrar-popup {
+	font-size: 16px;
+	line-height: 16px;
+	display: block;
+	text-align: right;
+	transition: .3s ease all;
+	
+	color: #BBBBBB;
+}
+
+.popup2 .btn-cerrar-popup:hover {
+	color: #000;
+}
+
+.popup2 h3 {
+	font-size: 36px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	opacity: 1;
+}
+
+.popup2 h4 {
+	font-size: 26px;
+	font-weight: 300;
+	margin-bottom: 40px;
+	opacity: 1;
+}
+
+.popup2 form .contenedor-inputs {
+	opacity: 1;
+}
+
+.popup2 form .contenedor-inputs input {
+	width: 100%;
+	margin-bottom: 20px;
+	height: 52px;
+	font-size: 18px;
+	line-height: 52px;
+	text-align: center;
+	border: 1px solid #BBBBBB;
+}
+
+.popup2 form .btn-submit {
+	padding: 0 20px;
+	height: 40px;
+	line-height: 40px;
+	border: none;
+	color: #fff;
+	background: #5E7DE3;
+	border-radius: 3px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 16px;
+	cursor: pointer;
+	transition: .3s ease all;
+}
+
+.popup2 form .btn-submit:hover {
+	background: rgba(94,125,227, .9);
+}
+
+/* ------------------------- */
+/* ANIMACIONES */
+/* ------------------------- */
+.popup2.active {	transform: scale(1); opacity: 1; }
+
+  
+  
+  
+  input:checked + .slider:before {
+	-webkit-transform: translateX(16px);
+	-ms-transform: translateX(16px);
+	transform: translateX(16px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+	border-radius: 34px;
+  }
+  
+  .slider.round:before {
+	border-radius: 50%;
+  }
 
 /* Reset */
+#btn-cancel{
+	box-shadow: inset 0 0 0 0px rgb(255 255 255 / 0%);
+	height: 31.3px;
+	width: 30px;
+	color: #a99c9c !important;
+	text-align: center;
+	padding-left: 1px; padding-right: 1px;
+}
+#btn-cancel:hover{
+	background-color: #fafafa;
+	cursor: pointer;
+	color: #f1f1f1 !important;
+}
 
+#btn-acept {
+	
+	height: 31.3px;
+}
+ 
+#btn-editar{
+	height: 31.3px;
+}
+	table .td-hv:hover {
+	background-color: #e4e4e4;
+	cursor: pointer;
+  	}
 	html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
 		margin: 0;
 		padding: 0;
@@ -13,6 +312,13 @@
 		font-size: 100%;
 		font: inherit;
 		vertical-align: baseline;
+	}
+.lead{
+	margin-bottom: 1px;
+}
+	
+	.txt-title{
+		font-size: 21px;
 	}
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
 		display: block;
@@ -90,16 +396,7 @@
 	.row.\30 \25 {
 		margin: 0 0 -1px 0em;
 	}
-	.box-repo{
-		width: 100%;
-	}
-	.miw2 {
-		padding-left: 25px;
-		height: 24px;
-	}
-	.acs{
-		width: 100%;
-	}
+
 	.row.uniform.\30 \25 > * {
 		padding: 0em 0 0 0em;
 	}
@@ -2907,7 +3204,7 @@
 			}
 
 		table td {
-			padding: 0.75em 0.75em;
+			padding: 0.55em 0.55em;
 			vertical-align: middle;
 		}
 
@@ -2916,7 +3213,7 @@
 			font-size: 0.9em;
 			font-weight: 600;
 			padding: 0 0.75em 0.75em 0.75em;
-			text-align: left;
+			text-align: center;
 		}
 
 		table thead {

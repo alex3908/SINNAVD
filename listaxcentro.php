@@ -5,7 +5,6 @@ ob_start();
 	session_start();
 	require 'conexion.php';
 	date_default_timezone_set('America/Mexico_City');
-	$zonahoraria = date_default_timezone_get();
 	$fecha= date ("Y-m-d H:i:s", time());
 	if(!isset($_SESSION["id"])){
 		header("Location: index.php");
@@ -15,6 +14,29 @@ ob_start();
 	$id_centro=$_GET['id'];
 	$cas="SELECT c.id, c.nombre, c.titular, c.rfc, c.tipo, c.telefono, c.celular, c.correo1, c.correo2, c.sup, c.const, c.numacta, date_format(c.fecha_acta, '%d/%m/%Y') as fecha_acta, c.notaria, c.repreL, c.calle, c.cp, e.estado, m.municipio, l.localidad, c.completo from centros c, estados e, municipios m, localidades l where c.id='$id_centro' and c.id_estado=e.id and c.id_mun=m.id and c.id_loc=l.id";
 	$ecas=$mysqli->query($cas);
+	while ($rwcas=$ecas->fetch_assoc()) {
+		$id=$rwcas['id'];
+		$nombre=$rwcas['nombre'];
+		$titular=$rwcas['titular'];
+		$rfc=$rwcas['rfc'];
+		$tipo=$rwcas['tipo'];
+		$telefono=$rwcas['telefono'];
+		$celular=$rwcas['celular'];
+		$correo1=$rwcas['correo1'];
+		$correo2=$rwcas['correo2'];
+		$sup=$rwcas['sup'];
+		$const=$rwcas['const'];
+		$numacta=$rwcas['numacta'];
+		$fecha_acta=$rwcas['fecha_acta'];
+		$notaria=$rwcas['notaria'];
+		$repreL=$rwcas['repreL'];
+		$calle=$rwcas['calle'];
+		$cp=$rwcas['cp'];
+		$estado=$rwcas['estado'];
+		$municipio=$rwcas['municipio'];
+		$localidad=$rwcas['localidad'];
+		$completo=$rwcas['completo'];
+	}
 
 	$total="SELECT id from nna_centros where id_centro='$id_centro'";
 	$etotal=$mysqli->query($total);	
@@ -30,20 +52,19 @@ ob_start();
 
 
 	if(!empty($_POST['primera'])){ 
-				$prof = $_POST['prof'];
-				$cantidad = mysqli_real_escape_string($mysqli,$_POST['cantidad']);
-				$fecha= date ("Y-m-d H:i:s", time());
-				$valta="SELECT id from cas3 where id_cas='$id_centro' and profesion='$prof'";
-				$evalta=$mysqli->query($valta);
-				$rowv=$evalta->num_rows;
-				if ($rowv>0) {
-					echo "Profesion ya registrada";
-				}else {
-					$inse="INSERT INTO cas3 (id_cas, fecha_reg, respo_reg, profesion, cantidad) VALUES ('$id_centro', '$fecha', '$idDEPTO', '$prof', '$cantidad')";
-					$einse=$mysqli->query($inse);
-				}
-
-			}	
+		$prof = $_POST['prof'];
+		$cantidad = mysqli_real_escape_string($mysqli,$_POST['cantidad']);
+		$fecha= date ("Y-m-d H:i:s", time());
+		$valta="SELECT id from cas3 where id_cas='$id_centro' and profesion='$prof'";
+		$evalta=$mysqli->query($valta);
+		$rowv=$evalta->num_rows;
+		if ($rowv>0) {
+			echo "Profesion ya registrada";
+		}else {
+			$inse="INSERT INTO cas3 (id_cas, fecha_reg, respo_reg, profesion, cantidad) VALUES ('$id_centro', '$fecha', '$idDEPTO', '$prof', '$cantidad')";
+			$einse=$mysqli->query($inse);
+		}
+	}	
 	$ww="SELECT sum(cantidad) as total from cas3 where id_cas='$id_centro'"; 
 	$eww=$mysqli->query($ww);
 	while ($row=$eww->fetch_assoc()) { 
@@ -52,26 +73,20 @@ ob_start();
 		$fecha= date ("Y-m-d H:i:s", time());
 		$upd="UPDATE cas2 SET fecha_cierre='$fecha', respo_cierre='$idDEPTO', personal_total='$ttot' where id_cas='$id_centro'";
 		$eupd=$mysqli->query($upd);
-
 	}		
 	$pc="SELECT id from prof_cas where id_cas='$id_centro'";
 	$epc=$mysqli->query($pc);
 	$cona=$epc->num_rows;  //numero de profe registrados hasta el momento
 	if ($ttot>0) { //ya hay mas de un profecional contado (no necesariamente registrado)
 		if ($ttot==$cona) { //si ya completo el registro qe habia mencionado
-		$pval="SELECT id from centros where id='$id_centro' and completo is null";
-		$epval=$mysqli->query($pval);
-		$roww=$epval->num_rows;
-		if ($roww>0) {
-		$ter="UPDATE centros set completo='1', fecha_com='$fecha' where id='$id_centro'";
-		$eter=$mysqli->query($ter);
-		}else {
-
+			$pval="SELECT id from centros where id='$id_centro' and completo is null";
+			$epval=$mysqli->query($pval);
+			$roww=$epval->num_rows;
+			if ($roww>0) {
+			$ter="UPDATE centros set completo='1', fecha_com='$fecha' where id='$id_centro'";
+			$eter=$mysqli->query($ter);
+			}
 		}
-		
-	}else {
-		
-	}
 	}
 	
 	$nnaC="SELECT id from nna_centros where id_centro='$id_centro' and activo='1'";
@@ -84,85 +99,78 @@ ob_start();
 ?>
 
 <!DOCTYPE HTML>
-
 <html>
-	<head>
-		<title>Lista</title>
+	<head lang="es-ES">
+		<title>Centro</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" 
 		/>
 		<link rel="shortcut icon" href="images/favicon.png" type="image/png" />
-		</head>
+	</head>
 	<body>
-
 		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Main -->
-					<div id="main">
-						<div class="inner"> 
-		<section id="search" class="alt">
-			<?php while ($row=$ecas->fetch_assoc()) { ?>
-
-		<div class="box alt" align="center">
-			<div class="row 10% uniform">
-				<div class="4u"><img src="images/crece.jpg" width="80px" height="70px" /></div>
-				<div class="4u"><img src="images/dif.jpg" width="40px" height="80px" /></div>
-				<div class="4u"><img src="images/armas.jpg" width="80px" height="80px"/></div>
-			</div>
-		</div> 
-		<div class="box alt" align="center">
-			<div class="row uniform">
-				<div class="1u" align="left"><input type="button" value="atras" class="fit small" onclick="location='cas.php'"></div>
-				<div class="6u" align="left"><h2><?php echo $row['nombre']; ?></h2></div>
-				<div class="2u"><?php $com=$row['completo']; if ($com=='1') { ?>
-				<input type="image" src="images/ejecutada.png" height="50" width="50" disabled> <?php }else { echo "REGISTRO INCOMPLETO"; } ?>
-				</div>
-				<div class="3u">
-					
-				</div>
-			</div>
-		</div> 
-		
-		<div class="box alt">
-			<div class="row uniform">
-				<div class="4u 12u$(xsmall)" align="left">
-					<ul class="alt">
-						<li><b>Tipo:</b> <?php echo $row['tipo'];?></li>
-						<li><b>Titular:</b> <?php echo $row['titular'];?></li>
-						<li><b>RFC:</b> <?php echo $row['rfc'];?></li>		
-						<li><b>Dirección:</b> <?php echo $row['calle'].', '.$row['cp'].', '.$row['localidad'].', '.$row['municipio'].', '.$row['estado'].'.';?></li>
-						<li>Datos registrales del acta constitutiva:<br><b>Numero de acta:</b> <?php echo $row['numacta'];?><br><b>Fecha:</b> <?php if($row['fecha_acta']=='01/01/1900') echo "-"; else  echo $row['fecha_acta'];?></li>
-					</ul>
-				</div>
-				<div class="4u 12u$(xsmall)" align="left">
-					<ul class="alt">
-						<li><b>Teléfono fijo:</b> <?php echo $row['telefono'];?></li>	
-						<li><b>Teléfono celular:</b> <?php echo $row['celular'];?></li>
-						<li><b>Superficie total:</b> <?php echo $row['sup'];?></li>
-						<li><b>Construcción total:</b> <?php echo $row['const'];?></li>					
-					</ul>
-				</div>
-				<div class="4u 12u$(xsmall)" align="left">
-					<ul class="alt">
-						<li><b>Correo 1:</b> <?php echo $row['correo1'];?></li>		
-						<li><b>Correo 2:</b> <?php echo $row['correo2'];?></li>
-						<li><b>Notaría pública:</b> <?php echo $row['notaria'];?></li>	
-						<li><b>Representante legal:</b> <?php echo $row['repreL']; $comp=$row['completo'];?></li>	
-					</ul>
-				</div>	
-			</div>	
-		<div class="row uniform">
-			<div class="11u 12u$(xsmall)"></div>
-			<div class="1u 12u$(xsmall">
-			<?php if ($rows2>0) { ?>		
-			<a href="completarInfoCas.php?id=<?php echo $id_centro ?>">Editar</a>
-			<?php } ?>
-			</div>
-		</div>
-		</div><?php } ?> 
+		<div id="wrapper">
+			<div id="main">
+				<div class="inner"> 
+					<section id="search" class="alt">
+						<div class="box alt" align="center">
+							<div class="row 10% uniform">
+								<div class="4u"><img src="images/crece.jpg" width="80px" height="70px" /></div>
+								<div class="4u"><img src="images/dif.jpg" width="40px" height="80px" /></div>
+								<div class="4u"><img src="images/armas.jpg" width="80px" height="80px"/></div>
+							</div>
+						</div> 
+						<div class="box alt" align="center">
+							<div class="row uniform">
+								<div class="2u" align="left"><input type="button" value="atras" class="fit small" onclick="location='cas.php'"></div>
+								<div class="6u" align="left"><h2><?php echo $row['nombre']; ?></h2></div>
+								<div class="2u"><?php $com=$row['completo']; if ($com=='1') { ?>
+								<input type="image" src="images/ejecutada.png" height="50" width="50" disabled> <?php }else { echo "REGISTRO INCOMPLETO"; } ?>
+								</div>
+								<div class="3u">
+									
+								</div>
+							</div>
+						</div> 
+						<div class="box alt">
+							<div class="row uniform">
+								<div class="4u 12u$(xsmall)" align="left">
+									<ul class="alt">
+										<li><b>Tipo:</b> <?php echo $row['tipo'];?></li>
+										<li><b>Titular:</b> <?php echo $row['titular'];?></li>
+										<li><b>RFC:</b> <?php echo $row['rfc'];?></li>		
+										<li><b>Dirección:</b> <?php echo $row['calle'].', '.$row['cp'].', '.$row['localidad'].', '.$row['municipio'].', '.$row['estado'].'.';?></li>
+										<li>Datos registrales del acta constitutiva:<br><b>Numero de acta:</b> <?php echo $row['numacta'];?><br><b>Fecha:</b> <?php if($row['fecha_acta']=='01/01/1900') echo "-"; else  echo $row['fecha_acta'];?></li>
+									</ul>
+								</div>
+								<div class="4u 12u$(xsmall)" align="left">
+									<ul class="alt">
+										<li><b>Teléfono fijo:</b> <?php echo $row['telefono'];?></li>	
+										<li><b>Teléfono celular:</b> <?php echo $row['celular'];?></li>
+										<li><b>Superficie total:</b> <?php echo $row['sup'];?></li>
+										<li><b>Construcción total:</b> <?php echo $row['const'];?></li>					
+									</ul>
+								</div>
+								<div class="4u 12u$(xsmall)" align="left">
+									<ul class="alt">
+										<li><b>Correo 1:</b> <?php echo $row['correo1'];?></li>		
+										<li><b>Correo 2:</b> <?php echo $row['correo2'];?></li>
+										<li><b>Notaría pública:</b> <?php echo $row['notaria'];?></li>	
+										<li><b>Representante legal:</b> <?php echo $row['repreL']; $comp=$row['completo'];?></li>	
+									</ul>
+								</div>	
+							</div>
+							<div class="row uniform">
+								<div class="11u 12u$(xsmall)"></div>
+								<div class="1u 12u$(xsmall">
+								<?php if ($rows2>0) { ?>		
+								<a href="completarInfoCas.php?id=<?php echo $id_centro ?>">Editar</a>
+								<?php } ?>
+								</div>
+							</div>
+						</div>
 			
 				<?php if (empty($sqb)) { ?>
 				<div align="right" class="12u 12u$(xsmall)">

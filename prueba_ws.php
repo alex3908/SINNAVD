@@ -1,6 +1,6 @@
 <?php
 
-	$cliente= new SoapClient('http://172.16.1.42/sistemas/wssieb/WebServiceBeneficiarios.asmx?wsdl');
+	$cliente= new SoapClient('http://187.188.236.198:8090/sistemas/wssieb/WebServiceBeneficiarios.asmx?wsdl');
 	$param=array('CURP'=>'EIRE101227HNESMDA0');
   var_dump($param);
   $response= $cliente->ConsultaPorCurp($param);
@@ -8,7 +8,7 @@
 	var_dump($response);
   var_export($response);
   
-  $cl= new SoapClient('http://172.16.1.42/sistemas/wssieb/WebServiceBeneficiarios.asmx?wsdl');
+  $cl= new SoapClient('http://187.188.236.198:8090/sistemas/wssieb/WebServiceBeneficiarios.asmx?wsdl');
  /* $xmlr= new SimpleXMLElement("<Persona></Persona>");
  
   $xmlr->addChild('CURP',' ');

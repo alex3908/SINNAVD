@@ -51,12 +51,13 @@
 					<td><b>Folio del casos</b></td>
 					<td><b>Representante coadyuvante</b></td>
 					<td><b>Estatus</b></td>
+					<td><b>Imputado</b></td>
 				</tr>
 				<tbody>
 <?php
 	@$buscar = $_POST["palabra"];
 	
-	$query="SELECT carpeta_inv.id, carpeta_inv.nuc, date_format(carpeta_inv.fecha_inicio,'%d/%m/%Y') as fecha_ini, casos.folio_c, carpeta_inv.estado, carpeta_inv.tipo_pross, departamentos.responsable from carpeta_inv, casos, departamentos where casos.id=carpeta_inv.id_caso and departamentos.id=carpeta_inv.asignado and (carpeta_inv.nuc like '%$buscar%'  OR departamentos.responsable like '%$buscar%' OR casos.folio_c like '%$buscar%') order by carpeta_inv.id desc limit 20";
+	$query="SELECT carpeta_inv.id, carpeta_inv.nuc, date_format(carpeta_inv.fecha_inicio,'%d/%m/%Y') as fecha_ini, casos.folio_c, carpeta_inv.estado, carpeta_inv.tipo_pross, departamentos.responsable, imputado from carpeta_inv, casos, departamentos where casos.id=carpeta_inv.id_caso and departamentos.id=carpeta_inv.asignado and (carpeta_inv.nuc like '%$buscar%' OR imputado like '%$buscar%'  OR departamentos.responsable like '%$buscar%' OR casos.folio_c like '%$buscar%') order by carpeta_inv.id desc limit 20";
 	
 	
 	$resultado=$mysqli->query($query);
@@ -77,26 +78,30 @@
 										
 								<?php }}else { ?>  <?php  echo $row['responsable']; } ?>
 							</td>
-							<td><?php $est=$row['estado'];$tip=$row['tipo_pross'];
-								if ($tip==0) {								
-											if ($est==20) { ?>
-								 	<img src="images/G20.png" width="80">
-								 <?php }else if ($est==40) { ?>
-								 	<img src="images/G40.png" width="80">
-								 <?php }else if ($est==60) { ?>
-								 	<img src="images/G60.png" width="80">
-								 <?php }else if ($est==80) { ?>
-								 	<img src="images/G80.png" width="80">
-								 <?php }else if($est==100){ ?>
-								 	<img src="images/G100.png" width="80">
-								 <?php 	}
-								 }else if ($tip>=1 or $tip<=4) { ?>
-								 	INVESTIGACION TERMINADA
-								 <?php }else if ($tip==5 or $tip==6) { ?>
+							<td>
+								<?php $est=$row['estado'];$tip=$row['tipo_pross'];
+								if ($tip==0) {
+									if ($est==20) { ?>
+										<img src="images/G20.png" width="80">
+									<?php } else if ($est==40) { ?>
+										<img src="images/G40.png" width="80">
+									<?php }else if ($est==60) { ?>
+										<img src="images/G60.png" width="80">
+									<?php }else if ($est==80) { ?>
+										<img src="images/G80.png" width="80">
+									<?php }else if($est==100){ ?>
+										<img src="images/G100.png" width="80">
+									<?php 	}
+								} else if ($tip>=1 or $tip<=4) { ?>
+									INVESTIGACION TERMINADA
+								<?php } else if ($tip==5 or $tip==6) { ?>
 								 	SOLUCION ALTERNA
-								 <?php }else if ($tip==7) { ?>
+								<?php } else if ($tip==7) { ?>
 								 	TERMINACION ANTICIPADA
-								 <?php } ?></td>
+								<?php } ?>
+							</td>
+							<td><?=$row['imputado']?></td>
+
 						</tr>
 					<?php } ?>
 				</tbody>

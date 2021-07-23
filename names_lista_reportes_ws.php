@@ -6,7 +6,7 @@ if(!isset($_SESSION["id"])){
   header("Location: welcome.php");
 }
 $idDEPTO = $_SESSION['id'];
-  $urlReportes ='https://name-pruebas.inftelapps.com/api/reportes';
+  $urlReportes ='http://172.16.1.37:8094/swNames/api/consumoNames';
   $jsonReportes = file_get_contents($urlReportes); 
 	
   $arrReportes = json_decode($jsonReportes);

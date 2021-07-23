@@ -3,7 +3,7 @@ ob_start();
 
 	session_start();
 	require 'conexion.php';
-	
+	date_default_timezone_set('America/Mexico_City');
 	if(!isset($_SESSION["id"])){
 		header("Location: index.php");
 	}
@@ -25,24 +25,39 @@ ob_start();
 	if(!empty($_POST))
 	{
 		$respo=$_POST['respo'];
+		$fecha= date("Y-m-d H:i:s", time()); 
 		if ($respo=='0') {
 			echo "Seleccione a un responsable";
 		}else {
-		$turnar="UPDATE carpeta_inv set asignado='$respo' where id='$idCarpeta'";
-		$eturnar=$mysqli->query($turnar);
+			/*$turnar="UPDATE carpeta_inv set asignado='$respo' where id='$idCarpeta'";
+			$eturnar=$mysqli->query($turnar);
 
-		$ins="INSERT into historial_carpetas (id_carpeta, asignado, fecha_ini, fecha_fin, respo_reg, fecha) values ('$idCarpeta','$asignado','$fecha_ini','$fecha','$idDEPTO','$fecha')";
-		$eins=$mysqli->query($ins);
+			$ins="INSERT into historial_carpetas (id_carpeta, asignado, fecha_ini, fecha_fin, respo_reg, fecha) values ('$idCarpeta','$asignado','$fecha_ini','$fecha','$idDEPTO','$fecha')";
+			$eins=$mysqli->query($ins);*/
 
-		header("Location: lista_carpeta.php");
-}
+			$ReasignarCar = "CALL reasignar_carpeta($idCarpeta, '$respo',  $idDEPTO, '$fecha')";
+			$qReasignarCar = $mysqli->query($ReasignarCar);
+			if($qReasignarCar){
+				header("Location: perfil_carpeta.php?id=$idCarpeta");
+			} else {
+				$errnov= mysqli_real_escape_string($mysqli,$mysqli->errno);
+				$errorv= mysqli_real_escape_string($mysqli,$mysqli->error);
+				$url= $_SERVER["REQUEST_URI"];
+				$qError = "INSERT INTO historico_errores (archivo, var_errno, var_error, usuario) values ('$url','$errnov', '$errorv', '$idDEPTO')";
+				$rError=$mysqli->query($qError);
+				$qConError="SELECT max(id) from historico_errores where usuario=$idDEPTO and archivo='$url'";
+				$rConError=$mysqli->query($qConError);
+				$idError=implode($rConError->fetch_assoc());
+				$error= "Error al registrar, identificador: ".$idError;
+			}
+		}
 	}
 ?>
 <!DOCTYPE HTML>
 
 <html>
-	<head>
-		<title>Lista</title>
+	<head lang="ES-mx">
+		<title>Reasigna carpeta</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -61,7 +76,7 @@ ob_start();
 			<div class="row uniform">
 			<div class="12u$">
 				<div class="select-wrapper">
-					<select id="respo" name="respo" >
+					<select id="respo" name="respo" required="true">
 						<option value="0">Seleccione un nuevo responsable...</option>
 						<?php while($row = $etper->fetch_assoc()){ ?>
 						<option value="<?php echo $row['id']; ?>"><?php echo $row['responsable']; ?></option>

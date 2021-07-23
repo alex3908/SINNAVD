@@ -110,7 +110,7 @@
             $eactu=$mysqli->query($actu);
             if ($eactu>0) {
                 echo "<script>
-                    alert('La información ha sido actualizada');   
+                     ('La información ha sido actualizada');   
                     window.location= 'acercamiento_psic.php?id=$idReporte&idn=$idNNA'
                     </script>";
             }else {

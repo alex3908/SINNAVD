@@ -1852,16 +1852,18 @@ case 12: //c1 a27
 			if (empty($fec)) {
 				echo "Selecciona el mes";
 			}else {
-			$pf="SELECT fechas, mes from cortes where idXaño=$fec and año='$anio'";
+			$pf="SELECT fechas, mes, fechai, fechac from cortes where idXaño=$fec and año='$anio'";
 			$epf=$mysqli->query($pf);
 			while ($row=$epf->fetch_assoc()) {
 				$fff=$row['fechas'];
+				$feci=$row['fechai'];
+				$fecc=$row['fechac'];
 				$me=$row['mes'];
 			}
-		$sql="SELECT municipios.municipio, sum(ccpi.na+ccpi.ni+ccpi.adm+ccpi.adh+ccpi.am+ccpi.ah) as total from ccpi inner join municipios on ccpi.municipio=municipios.id where fecha_reg in ($fff) group by municipios.id";
+		$sql="SELECT municipios.municipio, sum(ccpi.na+ccpi.ni+ccpi.adm+ccpi.adh+ccpi.am+ccpi.ah) as total from ccpi inner join municipios on ccpi.municipio=municipios.id where fecha_reg BETWEEN '$feci' and '$fecc' group by municipios.id";
 		$esql=$mysqli->query($sql);
 
-		$sql2="SELECT municipios.municipio, count(ccpi.id) as total from ccpi inner join municipios on ccpi.municipio=municipios.id where fecha_reg in ($fff) group by municipios.id";
+		$sql2="SELECT municipios.municipio, count(ccpi.id) as total from ccpi inner join municipios on ccpi.municipio=municipios.id where fecha_reg BETWEEN '$feci' and '$fecc' group by municipios.id";
 		$esql2=$mysqli->query($sql2); ?>
 		<div class="box">
 			<h4><?php echo $me; ?></h4>

@@ -6,6 +6,7 @@ if (!isset($_SESSION["id"])) {
     header("Location: index.php");
 }
 
+$_SESSION['query'] = null;
 $idDEPTO = $_SESSION['id'];
 
 $sql = "SELECT id, responsable, id_depto, id_personal FROM departamentos WHERE id= '$idDEPTO'";
@@ -15,10 +16,10 @@ $result2 = $mysqli->query($sql);
 @$buscar = $_POST['palabra'];
 
 while ($row = $result->fetch_assoc()) {
-    $idPersonal = $row['id'];
     $mi = $row['id_depto'];
     $cargo = $row['id_personal'];
     $nom = $row['responsable'];
+    $id = $row['id'];
     if ($cargo == 2 or $cargo == 1) { //recepcioista y administrador
         $listaUsuariosNull = "SELECT historial.id, historial.id_usuario, usuarios.nombre, usuarios.apellido_p, usuarios.apellido_m, depto.departamento, historial.asunto, historial.fecha_ingreso, historial.fecha_salida, historial.responsable FROM historial, usuarios, depto WHERE depto.id=historial.id_departamento && usuarios.id=historial.id_usuario && historial.fecha_salida is null";
         $rUsuariosNull = $mysqli->query($listaUsuariosNull);
@@ -35,6 +36,7 @@ while ($row = $result->fetch_assoc()) {
 
         $listaBeneficiariosNull = "SELECT visitas_unidad.id, visitas_unidad.id_benef, visitas_unidad.responsable, visitas_unidad.tipo, visitas_unidad.asunto, visitas_unidad.fecha, benef_unidad.folio, benef_unidad.nombre, benef_unidad.apellido_p, benef_unidad.apellido_m, cat_asuntos_unidad.asunto FROM visitas_unidad, benef_unidad, cat_asuntos_unidad WHERE visitas_unidad.id_benef=benef_unidad.id && visitas_unidad.asunto=cat_asuntos_unidad.id";
         $rBeneficiariosNull = $mysqli->query($listaBeneficiariosNull);
+
         $listaBeneficiariosNull2 = "SELECT visitas_unidad.id, visitas_unidad.id_benef, visitas_unidad.responsable, visitas_unidad.tipo, visitas_unidad.asunto, visitas_unidad.fecha, benef_unidad.folio, benef_unidad.nombre, benef_unidad.apellido_p, benef_unidad.apellido_m, cat_asuntos_unidad.asunto FROM visitas_unidad, benef_unidad, cat_asuntos_unidad WHERE visitas_unidad.id_benef=benef_unidad.id && visitas_unidad.asunto=cat_asuntos_unidad.id";
         $rBeneficiariosNull2 = $mysqli->query($listaBeneficiariosNull2);
 
@@ -66,11 +68,7 @@ while ($row = $result->fetch_assoc()) {
     while ($row = $ereportes->fetch_assoc()) {
         $pendi = $row['cuenta'];
     }
-    $reportesvd = "SELECT pc.id, ps.id_departamentos_asignado as asigPs, ts.id_departamentos_asignado as asigTs, estadoAtencion
-from posible_caso pc left join historico_atenciones_pos_casos aten on aten.id=pc.id_estado_atencion
-left join historico_asignaciones_psicologia ps on ps.id=pc.id_asignado_ps
-left join historico_asignaciones_trabajo_social ts on ts.id=pc.id_asignado_ts
-where (ps.id_departamentos_asignado=$idDEPTO or ts.id_departamentos_asignado=$idDEPTO) and (estadoAtencion=1 or pc.id_estado_atencion=0)";
+    $reportesvd = "SELECT id from reportes_vd where atendido='1' and (asignado='$idDEPTO' or asignado_psic='$idDEPTO')";
     $erepo = $mysqli->query($reportesvd);
     $wow = $erepo->num_rows;
     ?>
@@ -163,9 +161,6 @@ while ($row = $care->fetch_assoc()) {
     echo $row['personal'];
 }?></h3>
 
-
-
-
 	                <div class="box">
 	                    <?php if ($cargo == 6) {?>
 	                    <!--mostrar para UIENNAVD-->
@@ -244,18 +239,18 @@ while ($row = $care->fetch_assoc()) {
 	                                    <td><?php echo $row['fecha_ingreso']; ?></td>
 
 	                                    <?php
-if ($mi == 7 or $mi == 16) {?>
+if ($mi == 7) {?>
 
 	                                    <td><span class="button special disabled">Visita en curso</span></td>
 
-	                                    <?php } else if ($cargo == 3 or $cargo == 5) { //administrativo y subprocu
+	                                    <?php } else if ($cargo == 3 or $cargo == 5 or $mi == 16) { //administrativo y subprocu
         if (empty($res)) {?>
 
 	                                    <td><input type="button" class="button special fit small" name="Terminar visita"
 	                                            value="Canalizar visita"
 	                                            onclick="location='canalizar_visita.php?id=<?php echo $row['id']; ?>'">
 	                                    </td>
-	                                    <?php } else if ($row['responsable'] == $nom) {?>
+	                                    <?php } else if ($row['responsable'] == $nom or $mi == 16) {?>
 	                                    <td><input type="button" class="button special fit small" name="Terminar visita"
 	                                            value="Terminar visita"
 	                                            onclick="location='terminar_visita.php?id=<?php echo $row['id']; ?>'">
@@ -391,8 +386,15 @@ if ($mi == 7 or $mi == 16) {?>
 	                        <li>
 	                            <span class="opener">Adopciones</span>
 	                            <ul>
-	                                <li><a href="reg_expAdop.php">Generar expediente</a></li>
-	                                <li><a href="">Expedientes</a></li>
+	                                <li><a <?php if ($id == 56 or $id == 63 or $id == 23 or $id == 228 or $id = 234) {?>
+	                                        href="solicitudesAdopciones.php" <?php }?>>Expedientes</a></li>
+	                                <li><a <?php if ($id == 56 or $id == 63 or $id == 23 or $id == 228 or $id = 234) {?>
+	                                        href="nna_susceptibles_adopcion.php" <?php }?>>NNA Susceptibles de adopcion</a>
+	                                </li>
+	                                <li><a <?php if ($id == 56 or $id == 36 or $id == 228 or $id = 234) {?>
+	                                        href="juicios_de_adopcion.php" <?php }?>>Control de procedimiento juridico de
+	                                        adopción</a>
+	                                </li>
 	                            </ul>
 	                        </li>
 	                        <?php if ($_SESSION['departamento'] == 16 or $_SESSION['departamento'] == 14) {?>
@@ -437,6 +439,11 @@ if ($mi == 7 or $mi == 16) {?>
 	    <script src="assets/js/util.js"></script>
 	    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 	    <script src="assets/js/main.js"></script>
+	    <script>
+	    $(document).ready(function() {
+	        sessionStorage.setItem('band', 'false');
+	    })
+	    </script>
 
 	</body>
 

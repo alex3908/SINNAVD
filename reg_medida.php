@@ -38,8 +38,7 @@
 	$consulta="SELECT id, medida_p FROM medidas";
 	$econsulta=$mysqli->query($consulta);
 
-	$sqlbene="SELECT nna.id, nna.nombre, nna.apellido_p, nna.apellido_m, nna_caso.estado from
- nna, nna_caso where nna_caso.id_caso='$idCaso' and nna_caso.id_nna=nna.id and nna_caso.estado='NE'order by nna.apellido_p";
+	$sqlbene="SELECT nna.id, nna.nombre, nna.apellido_p, nna.apellido_m, nna_caso.estado from nna, nna_caso where nna_caso.id_caso='$idCaso' and nna_caso.id_nna=nna.id and nna_caso.estado='NE'";
 	$esqlbene=$mysqli->query($sqlbene);
 
 	$cuadro="SELECT id_derecho, marco, med_prot, beneficiario, responsable_med, atp_encargada, periodicidad, estado, observaciones, date_format(cuadro_guia.fecha_registro, '%d/%m/%Y') as fecha, id_sp_registro from cuadro_guia where id_caso='$idCaso'";

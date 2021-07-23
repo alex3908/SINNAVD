@@ -68,7 +68,7 @@
 	$trespo="SELECT id, responsable from departamentos";
 	$etrespo=$mysqli->query($trespo);
 
-	$urlInstNames ='https://name-pruebas.inftelapps.com/api/instituciones'; //toma los valores del ws del catalogo instituciones para names
+	$urlInstNames ='http://172.16.1.37:8094/swNames/api/Instituciones'; //toma los valores del ws del catalogo instituciones para names
 	$jsInstNames = file_get_contents($urlInstNames);
 	$InstNames = json_decode($jsInstNames);
 	$numIntNames= count($InstNames);

@@ -9,7 +9,7 @@ $idDEPTO = $_SESSION['id'];
   date_default_timezone_set('America/Mexico_City');
   $zonahoraria = date_default_timezone_get();
   $num= $_GET['num'];
-  $urlReporte ='https://name-pruebas.inftelapps.com/api/reportes';
+  $urlReporte ='http://172.16.1.37:8094/swNames/api/consumoNames';
   $jsonReporte = file_get_contents($urlReporte);
   $arrReporte = json_decode($jsonReporte);
   $fec=date("Y-m-d");
