@@ -1,0 +1,23 @@
+SELECT nna.apellido_p, nna.apellido_m, nna.nombre, nna.curp, nna.sexo from nna, benefmed, cuadro_guia, seguimientos 
+where benefmed.id_nna=nna.id and cuadro_guia.id=benefmed.id_medida and cuadro_guia.id=seguimientos.id_med and seguimientos.fecha LIKE '%2019%' and (nna.fecha_reg LIKE '%2018%' or nna.fecha_reg LIKE '%2017%')
+
+
+
+SELECT municipios.municipio, localidades.localidad, nna.apellido_p, nna.apellido_m, nna.nombre, nna.curp, nna.sexo, seguimientos.fecha 
+from localidades, municipios, nna, benefmed, cuadro_guia, seguimientos 
+where benefmed.id_nna=nna.id and cuadro_guia.id=benefmed.id_medida and cuadro_guia.id=seguimientos.id_med 
+and seguimientos.fecha LIKE '%2019%' and (nna.fecha_reg LIKE '%2018%' or nna.fecha_reg LIKE '%2017%') 
+and localidades.id=nna.localidad and municipios.id=nna.municipio
+
+
+
+SELECT municipios.id, municipios.municipio, localidades.clave, localidades.localidad, nna.apellido_p, nna.apellido_m, nna.nombre, nna.curp, nna.sexo
+from localidades, municipios, nna, benefmed, cuadro_guia, seguimientos 
+where benefmed.id_nna=nna.id and cuadro_guia.id=benefmed.id_medida and cuadro_guia.id=seguimientos.id_med 
+and seguimientos.fecha in() and localidades.id=nna.localidad and municipios.id=nna.municipio
+
+
+SELECT municipios.id, municipios.municipio, localidades.clave, localidades.localidad, nna.apellido_p, nna.apellido_m, nna.nombre, nna.curp, nna.sexo 
+from localidades, municipios, nna, benefmed, cuadro_guia 
+where benefmed.id_nna=nna.id and cuadro_guia.id=benefmed.id_medida 
+and cuadro_guia.fecha in() and localidades.id=nna.localidad and municipios.id=nna.municipio

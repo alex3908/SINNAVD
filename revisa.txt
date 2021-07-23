@@ -1,0 +1,220 @@
+<div class="box">
+                <h4>Niñas, Niños y Adolescentes</h4>
+                <?php while ($row=$enna->fetch_assoc()) { ?>
+                <hr class="major" />
+                <div class="row uniform">
+                    <div class="4u 12u$(xsmall)">
+                        <strong>Nombre:</strong> <?php echo $row['nombre'].' '.$row['apellido_p'].' '.$row['apellido_m']; ?>
+                    </div>
+                    <div class="2u 12u$(xsmall)">
+                        <strong>Edad:</strong> <?php //echo $row['edad']; ?>
+                    </div>
+                    <div class="2u 12u$(xsmall)">
+                        <strong>Sexo:</strong> <?php echo $row['sexo']; ?>
+                    </div>
+                    <div class="2u 12u$(xsmall)">
+                        <strong>Curp:</strong> <?php echo $row['curp']; ?>
+                    </div>
+                    <div class="3u 12u$(xsmall)">
+                        <strong>Fecha de nacimiento:</strong> <?php echo $row['fecha_nac']; ?>
+                    </div>
+                    <div class="3u 12u$(xsmall)">
+                        <strong>Lugar de nacimiento:</strong> <?php echo $row['lugar_nac']; ?>
+                    </div>
+                    <div class="3u 12u$(xsmall)">
+                        <strong>Ocupación:</strong> <?php echo $row['ocupacion']; 
+                                $idnnaac=$row['id']; $oc=$row['ocupacion']; }
+                    $ocnna="SELECT id, nivel, nom_escuela, grupo, grado, turno, direccion_esc, lugar, direccion_tra, horario, sueldo FROM nnaen_acercats where id_nna='$idnnaac'"; 
+                    $eocnna=$mysqli->query($ocnna); 
+                    while ($row=$eocnna->fetch_assoc()) { 
+                        $idoc=$row['id']; } ?>   
+                    </div>
+                    <?php if ($oc=="NINGUNA" and empty($idoc)) {
+                        echo "falta";
+                    }else { ?>
+                    <div class="3u 12u$(xsmall)">
+                        <strong>Nivel:</strong> <?php echo $row['nivel']; ?>
+                    </div>
+                    <div class="3u 12u$(xsmall)">
+                        <strong>Nombre de la escuela:</strong> <?php echo $row['nom_escuela']; ?>
+                    </div>
+                    <div class="3u 12u$(xsmall)">
+                        <strong>Turno:</strong> <?php echo $row['turno']; ?>
+                    </div>                    
+                    <div class="8u 12u$(xsmall)">
+                        <strong>Grado y grupo:</strong> <?php echo $row['grado'].' '.$row['grupo']; ?>
+                    </div>                   
+                    <div class="4u 12u$(xsmall)">
+                        <strong>Dirección de la escuela:</strong> <?php echo $row['direccion_esc']; ?>   
+                    </div>
+                    <div class="4u 12u$(xsmall)">
+                        <strong>Lugar de trabajo:</strong> <?php echo $row['lugar']; ?>   
+                    </div>
+                    <div class="4u 12u$(xsmall)">
+                        <strong>Dirección del trabajo:</strong> <?php echo $row['direccion_tra']; ?>   
+                    </div>
+                    <div class="4u 12u$(xsmall)">
+                        <strong>Horario:</strong> <?php echo $row['horario']; ?>   
+                    </div>
+                    <div class="4u 12u$(xsmall)">
+                        <strong>Sueldo:</strong> <?php echo $row['sueldo']; ?>   
+                    </div> 
+                    <?php } ?>
+                </div>
+            </div>
+
+
+
+
+
+
+    if (!empty($_POST['escuela'])) {
+        $nivel=$_POST['nivel'];
+        $nomesc=$_POST['nomesc'];
+        $grado=$_POST['grado'];
+        $direccion_esc=$_POST['direccion_esc'];
+        $turno=$_POST['turno'];
+        $grupo=$_POST['grupo'];
+        $idnino=$_POST['idnino'];
+
+        $g="INSERT into nnaen_acercats (id_nna, nivel, nom_escuela, grupo, grado, turno, direccion_esc, respo_reg, fecha_reg) values ('$idnino', '$nivel', '$nomesc', '$grupo', '$grado', '$turno', '$direccion_esc', '$idDEPTO', '$fecha')";
+        $eg=$mysqli->query($g);
+        echo $g;
+        if ($eg>0) {
+            header("Location: acercamiento_ts.php?id=$idReporte");
+        }else {
+             echo "NO SE REGISTRO LA INFORMACIÓN";
+        }
+
+    }
+<?php  $idnnaac=$row['id']; $oc=$row['ocupacion']; 
+                    $ocnna="SELECT id, nivel, nom_escuela, grupo, grado, turno, direccion_esc, lugar, direccion_tra, horario, sueldo FROM nnaen_acercats where id_nna='$idnnaac'"; 
+                    $eocnna=$mysqli->query($ocnna); ?>
+                    <input type="text" name="idnino" value="<?php echo $idnnaac; ?>">
+                    
+                    <?php if ($oc=="NINGUNA") {
+
+                    }else if($oc=="ESTUDIA"){                        
+                        while ($row=$eocnna->fetch_assoc()) { 
+                        $idoc=$row['id']; } 
+                        if (empty($idoc)) { echo $ocnna; echo $idnnaac; ?>
+                        
+                        <div class="12u 12u$(xsmall)"><strong>Escuela</strong></div>
+                        <div class="4u 12u$(xsmall)">
+                        <div class="select-wrapper">
+                            <select id="nivel" name="nivel" required>
+                                <option value="">Nivel educativo</option>
+                                <option value="GUARDERIA">Guarderia</option>
+                                <option value="PREESCOLAR">Preescolar</option>
+                                <option value="PRIMARIA">Primaria</option>
+                                <option value="SECUNDARIA">Secundaria</option>
+                                <option value="PREPARATORIA">Preparatoria</option>
+                                <option value="NINGUNO">Ninguno</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="6u 12u$(xsmall)">
+                    <input name='nomesc' type='text' placeholder='Nombre de la escuela'>
+                    </div>
+                    <div class="2u 12u$(xsmall)">
+                        <div class="select-wrapper">
+                            <select id="turno" name="turno" required>
+                                <option value="">Turno...</option>
+                                <option value="MATUTINO">Matutino</option>
+                                <option value="VESPERTINO">Vespertino</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="2u 12u$(xsmall)">
+                    <input name='grado' type='text' placeholder='Grado' style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">
+                    </div>
+                    <div class="2u 12u$(xsmall)">
+                    <input name='grupo' type='text' placeholder='Grupo' style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">
+                    </div>
+                    <div class="8u 12u$(xsmall)">
+                    <input type="text" name="direccion_esc" placeholder="Dirección de la escuela" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div>
+
+                    <div class="12u"><input type="submit" name="escuela" value="Guardar"></div>
+                        <?php }else {  echo $ocnna; echo $idnnaac; ?>
+                            <strong>ya</strong>
+                        <?php }
+                    }else if($oc=="TRABAJA"){
+                        while ($row=$eocnna->fetch_assoc()) { 
+                        $idoc=$row['id']; }  echo $ocnna; echo $idnnaac; ;
+                        if (empty($idoc)) {  ?>                       
+                    <div class="12u$"><strong>Trabajo</strong></div>
+                    <div class="7u 12u$(xsmall)">
+                    <input type="text" name="lugar_tra" placeholder="Lugar de trabajo" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div>
+                    <div class="5u 12u$(xsmall)">
+                    <input type="text" name="horario" placeholder="Horario" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div> 
+                    <div class="3u 12u$(xsmall)">
+                    <input type="text" name="sueldo" placeholder="Sueldo" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div>
+                    <div class="9u 12u$(xsmall)">
+                    <input type="text" name="direccion_tra" placeholder="Dirección del trabajo" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div>
+                    <div class="12u"><input type="submit" name="trabajo" value="Guardar"></div>
+                    <?php }else {  echo $ocnna; echo $idnnaac; ?>
+                            <strong>ya</strong>
+                        <?php }
+                    }else if($oc=="ESTUDIA Y TRABAJA"){
+                        while ($row=$eocnna->fetch_assoc()) { 
+                        $idoc=$row['id']; } 
+                        if (empty($idoc)) { echo $ocnna; echo $idnnaac; ?>
+
+                        <div class="12u 12u$(xsmall)"><strong>Escuela</strong></div>
+                        <div class="4u 12u$(xsmall)">
+                        <div class="select-wrapper">
+                            <select id="nivel1" name="nivel1" required>
+                                <option value="">Nivel educativo</option>
+                                <option value="GUARDERIA">Guarderia</option>
+                                <option value="PREESCOLAR">Preescolar</option>
+                                <option value="PRIMARIA">Primaria</option>
+                                <option value="SECUNDARIA">Secundaria</option>
+                                <option value="PREPARATORIA">Preparatoria</option>
+                                <option value="NINGUNO">Ninguno</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="6u 12u$(xsmall)">
+                    <input name='nomesc1' type='text' placeholder='Nombre de la escuela'>
+                    </div>
+                    <div class="2u 12u$(xsmall)">
+                        <div class="select-wrapper">
+                            <select id="turno1" name="turno1" required>
+                                <option value="">Turno...</option>
+                                <option value="MATUTINO">Matutino</option>
+                                <option value="VESPERTINO">Vespertino</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="2u 12u$(xsmall)">
+                    <input name='grado1' type='text' placeholder='Grado' style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">
+                    </div>
+                    <div class="2u 12u$(xsmall)">
+                    <input name='grupo1' type='text' placeholder='Grupo' style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">
+                    </div>
+                    <div class="8u 12u$(xsmall)">
+                    <input type="text" name="direccion_esc1" placeholder="Dirección de la escuela" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div>
+                    <div class="12u$"><strong>Trabajo</strong></div>
+                    <div class="7u 12u$(xsmall)">
+                    <input type="text" name="lugar_tra1" placeholder="Lugar de trabajo" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div>
+                    <div class="5u 12u$(xsmall)">
+                    <input type="text" name="horario1" placeholder="Horario" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div> 
+                    <div class="3u 12u$(xsmall)">
+                    <input type="text" name="sueldo1" placeholder="Sueldo" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div>
+                    <div class="9u 12u$(xsmall)">
+                    <input type="text" name="direccion_tra1" placeholder="Dirección del trabajo" style="text-transform:uppercase;" onkeyup="this.value=this.value.toUpperCase();">    
+                    </div>
+                    <div class="12u"><input type="submit" name="esctra" value="Guardar"></div>
+                    <?php }else {  echo $ocnna; echo $idnnaac; ?>
+                            <strong>ya</strong>
+                        <?php }
+                    } ?> 
